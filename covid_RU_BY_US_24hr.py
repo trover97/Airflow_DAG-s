@@ -12,6 +12,7 @@ dag = DAG(
     dag_id='covid_RU_BY_US_24hr',
     start_date=dt.datetime(2020, 10, 1),
     schedule_interval='@daily',
+    catchup=False,
 )
 
 
