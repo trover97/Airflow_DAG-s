@@ -14,7 +14,7 @@ dag = DAG(
 
 
 def _create_random_dataset():
-    arr = np.random.normal(0, 1, 1000)
+    arr = np.random.normal(0, 1, 500)
     np.savetxt("random_dataset.csv", arr)
 
 
@@ -26,17 +26,20 @@ create_random_dataset = PythonOperator(
 
 
 def python_code():
+    from faker import Faker
     from bashplotlib.histogram import plot_hist
     import numpy as np
 
+    fake = Faker()
     arr = np.fromfile("random_dataset.csv")
-    plot_hist(arr, bincount=10)
+    print(f'{fake.name()} has {fake.random_number()}$ in wallet\n')
+    plot_hist(arr, bincount=5)
 
 
 task1 = PythonVirtualenvOperator(
     task_id='python-virtual-env-demo',
     python_callable=python_code,
-    requirements=['bashplotlib'],
+    requirements=['bashplotlib', "faker"],
     python_version='3',
     dag=dag)
 
